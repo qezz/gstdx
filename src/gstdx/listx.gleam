@@ -33,7 +33,7 @@ pub fn group_by_many(
 }
 
 pub type KeyedByError(k, t) {
-  DuplicateKeysError(key: k, items: List(t))
+  DuplicateKeyError(key: k, items: List(t))
 }
 
 pub fn keyed(
@@ -48,7 +48,7 @@ pub fn keyed(
       case items {
         [single_item] -> #(dict.insert(dict_acc, k, single_item), errors_acc)
         multiple_items -> #(dict_acc, [
-          DuplicateKeysError(k, multiple_items),
+          DuplicateKeyError(k, multiple_items),
           ..errors_acc
         ])
       }

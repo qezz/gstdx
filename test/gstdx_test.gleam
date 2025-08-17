@@ -52,7 +52,7 @@ pub fn listx_keyed_err_test() {
 
   let expected =
     Error([
-      listx.DuplicateKeysError("x", [
+      listx.DuplicateKeyError("x", [
         #("c", 3, "x"),
         #("a", 2, "x"),
         #("a", 1, "x"),
