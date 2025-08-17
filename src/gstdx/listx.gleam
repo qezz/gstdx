@@ -31,3 +31,31 @@ pub fn group_by_many(
     |> list.map(fn(pair) { pair.1 })
   })
 }
+
+pub type KeyedByError(k, t) {
+  DuplicateKeysError(key: k, items: List(t))
+}
+
+pub fn keyed(
+  list: List(v),
+  by key: fn(v) -> k,
+) -> Result(dict.Dict(k, v), List(KeyedByError(k, v))) {
+  let #(result_dict, errors) =
+    list
+    |> list.group(by: key)
+    |> dict.fold(#(dict.new(), []), fn(acc, k, items) {
+      let #(dict_acc, errors_acc) = acc
+      case items {
+        [single_item] -> #(dict.insert(dict_acc, k, single_item), errors_acc)
+        multiple_items -> #(dict_acc, [
+          DuplicateKeysError(k, multiple_items),
+          ..errors_acc
+        ])
+      }
+    })
+
+  case errors {
+    [] -> Ok(result_dict)
+    _ -> Error(errors)
+  }
+}

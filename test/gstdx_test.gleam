@@ -21,3 +21,43 @@ pub fn list_group_flat_lists_test() {
 
   assert expected == res
 }
+
+pub fn listx_keyed_ok_test() {
+  let input = [
+    #("a", "x"),
+    #("b", "y"),
+  ]
+
+  let expected =
+    Ok(
+      dict.from_list([
+        #("x", #("a", "x")),
+        #("y", #("b", "y")),
+      ]),
+    )
+
+  let res = input |> listx.keyed(by: fn(pair) { pair.1 })
+
+  assert expected == res
+}
+
+pub fn listx_keyed_err_test() {
+  let input = [
+    #("a", 1, "x"),
+    #("a", 2, "x"),
+    #("c", 3, "x"),
+    #("d", 4, "y"),
+  ]
+
+  let expected =
+    Error([
+      listx.DuplicateKeysError("x", [
+        #("c", 3, "x"),
+        #("a", 2, "x"),
+        #("a", 1, "x"),
+      ]),
+    ])
+  let res = input |> listx.keyed(by: fn(trio) { trio.2 })
+
+  assert expected == res
+}
