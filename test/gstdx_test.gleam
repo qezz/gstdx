@@ -1,4 +1,5 @@
 import gleam/dict
+import gleam/list
 import gleeunit
 import gstdx/listx
 
@@ -60,4 +61,11 @@ pub fn listx_keyed_err_test() {
   let res = input |> listx.keyed(by: fn(trio) { trio.2 })
 
   assert expected == res
+
+  let handled = case res {
+    Error(errors) -> errors |> list.map(with: fn(err) { err.key })
+    _ -> panic as "impossible"
+  }
+
+  assert handled == ["x"]
 }
