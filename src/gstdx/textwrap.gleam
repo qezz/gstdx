@@ -41,3 +41,18 @@ pub fn dedent(text: String) -> String {
     }
   }
 }
+
+/// Add prefix to the beginning of each non-empty line in text.
+///
+/// The behavior is similar to Python's `textwrap.indent` with the default
+/// predicate.
+pub fn indent(text: String, indentation: String) -> String {
+  string.split(text, "\n")
+  |> list.map(fn(line) {
+    case is_empty_or_whitespace_only(line) {
+      True -> line
+      False -> indentation <> line
+    }
+  })
+  |> string.join("\n")
+}

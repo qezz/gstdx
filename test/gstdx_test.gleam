@@ -8,6 +8,10 @@ type TestCase(i, o) {
   TestCase(input: i, expected: o)
 }
 
+type TestCase2(i1, i2, o) {
+  TestCase2(input1: i1, input2: i2, expected: o)
+}
+
 pub fn main() -> Nil {
   gleeunit.main()
 }
@@ -92,5 +96,16 @@ pub fn textwrap_dedent_test() {
 
   list.each(testcases, fn(tc) {
     assert tc.expected == textwrap.dedent(tc.input)
+  })
+}
+
+pub fn textwrap_indent_test() {
+  let testcases = [
+    TestCase2("hello\n  world", "  ", "  hello\n    world"),
+    TestCase2("\n   \nhey", "xxx", "\n   \nxxxhey"),
+  ]
+
+  list.each(testcases, fn(tc) {
+    assert tc.expected == textwrap.indent(tc.input1, tc.input2)
   })
 }
