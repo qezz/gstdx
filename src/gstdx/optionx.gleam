@@ -1,5 +1,4 @@
 import gleam/option.{type Option, None, Some}
-import gleam/string
 
 pub fn expect(res: option.Option(t), msg: String) -> t {
   case res {
