@@ -1,7 +1,10 @@
 import gleam/dict
 import gleam/list
+import gleam/option
 import gleeunit
 import gstdx/listx
+import gstdx/optionx
+import gstdx/resultx
 import gstdx/textwrap
 
 type TestCase(i, o) {
@@ -108,4 +111,22 @@ pub fn textwrap_indent_test() {
   list.each(testcases, fn(tc) {
     assert tc.expected == textwrap.indent(tc.input1, tc.input2)
   })
+}
+
+pub fn resultx_unwrap_test() {
+  let x: Result(Int, Int) = Ok(42)
+  resultx.unwrap(x)
+  // These tests will fail the tests suite.
+  //
+  // let y: Result(Int, Int) = Error(64)
+  // resultx.unwrap(y)
+}
+
+pub fn optionx_unwrap_test() {
+  let x: option.Option(Int) = option.Some(42)
+  optionx.unwrap(x)
+  // These tests will fail the tests suite.
+  //
+  // let y: option.Option(Int) = option.None
+  // optionx.unwrap(y)
 }
