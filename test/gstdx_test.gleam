@@ -2,6 +2,11 @@ import gleam/dict
 import gleam/list
 import gleeunit
 import gstdx/listx
+import gstdx/textwrap
+
+type TestCase(i, o) {
+  TestCase(input: i, expected: o)
+}
 
 pub fn main() -> Nil {
   gleeunit.main()
@@ -68,4 +73,24 @@ pub fn listx_keyed_err_test() {
   }
 
   assert handled == ["x"]
+}
+
+pub fn textwrap_dedent_test() {
+  let testcases = [
+    TestCase("   hello\n  world", " hello\nworld"),
+    TestCase("no changes\n     expected here", "no changes\n     expected here"),
+    TestCase(
+      "    consistent\n    indentation\n    block",
+      "consistent\nindentation\nblock",
+    ),
+    TestCase("\n   hey\n   it's me", "\nhey\nit's me"),
+    TestCase(
+      "\n  we need more\n\n\n  empty lines",
+      "\nwe need more\n\n\nempty lines",
+    ),
+  ]
+
+  list.each(testcases, fn(tc) {
+    assert tc.expected == textwrap.dedent(tc.input)
+  })
 }
