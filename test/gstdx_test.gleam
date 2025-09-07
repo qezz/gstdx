@@ -175,3 +175,12 @@ pub fn optionx_unwrap_test() {
   // let y: option.Option(Int) = option.None
   // optionx.unwrap(y)
 }
+
+pub fn listx_enumerate_test() {
+  let input = ["a", "b", "c"]
+  let expected = [#(0, "a"), #(1, "b"), #(2, "c")]
+
+  let actual = input |> listx.enumerate
+
+  assert expected == actual
+}

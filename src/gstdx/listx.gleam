@@ -102,3 +102,18 @@ pub fn key_by(
     _ -> Error(errors)
   }
 }
+
+/// Enumerate list items, starting from 0.
+///
+/// This function is similar to `list.index_map`, but without the mapping step.
+///
+/// ## Examples
+///
+/// ```gleam
+/// ["a", "b", "c"]
+/// |> enumerate
+/// // -> [#(0, "a"), #(1, "b"), #(2, "c")]
+/// ```
+pub fn enumerate(list: List(v)) -> List(#(Int, v)) {
+  list.index_map(list, fn(item, idx) { #(idx, item) })
+}
