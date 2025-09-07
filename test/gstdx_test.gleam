@@ -3,6 +3,7 @@ import gleam/list
 import gleam/option
 import gleam/result
 import gleeunit
+import gstdx/dictx
 import gstdx/listx
 import gstdx/optionx
 import gstdx/resultx
@@ -181,6 +182,38 @@ pub fn listx_enumerate_test() {
   let expected = [#(0, "a"), #(1, "b"), #(2, "c")]
 
   let actual = input |> listx.enumerate
+
+  assert expected == actual
+}
+
+pub fn dictx_merge_all_test() {
+  let input =
+    [
+      [
+        #("a", 1),
+        #("b", 1),
+      ],
+      [
+        #("b", 2),
+        #("c", 2),
+      ],
+      [
+        #("a", 3),
+        #("c", 3),
+        #("d", 4),
+      ],
+    ]
+    |> list.map(fn(list_of_pairs) { list_of_pairs |> dict.from_list })
+
+  let expected =
+    dict.from_list([
+      #("a", 3),
+      #("b", 2),
+      #("c", 3),
+      #("d", 4),
+    ])
+
+  let actual = input |> dictx.merge_all()
 
   assert expected == actual
 }
