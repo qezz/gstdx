@@ -35,7 +35,7 @@ pub fn list_group_flat_lists_test() {
   assert expected == res
 }
 
-pub fn listx_keyed_ok_test() {
+pub fn listx_key_by_ok_test() {
   let input = [
     #("a", "x"),
     #("b", "y"),
@@ -49,12 +49,12 @@ pub fn listx_keyed_ok_test() {
       ]),
     )
 
-  let res = input |> listx.keyed(by: fn(pair) { pair.1 })
+  let res = input |> listx.key_by(by: fn(pair) { pair.1 })
 
   assert expected == res
 }
 
-pub fn listx_keyed_err_test() {
+pub fn listx_key_by_err_test() {
   let input = [
     #("a", 1, "x"),
     #("a", 2, "x"),
@@ -70,7 +70,7 @@ pub fn listx_keyed_err_test() {
         #("a", 1, "x"),
       ]),
     ])
-  let res = input |> listx.keyed(by: fn(trio) { trio.2 })
+  let res = input |> listx.key_by(by: fn(trio) { trio.2 })
 
   assert expected == res
 

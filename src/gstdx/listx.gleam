@@ -32,14 +32,14 @@ pub fn group_by_many(
   })
 }
 
-pub type KeyedByError(k, t) {
+pub type KeyByError(k, t) {
   DuplicateKeyError(key: k, items: List(t))
 }
 
-pub fn keyed(
+pub fn key_by(
   list: List(v),
   by key: fn(v) -> k,
-) -> Result(dict.Dict(k, v), List(KeyedByError(k, v))) {
+) -> Result(dict.Dict(k, v), List(KeyByError(k, v))) {
   let #(result_dict, errors) =
     list
     |> list.group(by: key)
