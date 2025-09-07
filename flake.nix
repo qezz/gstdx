@@ -20,6 +20,8 @@
       {
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
+            bun
+            deno
             erlang
             gleam
             rebar3
