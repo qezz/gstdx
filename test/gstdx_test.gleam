@@ -1,6 +1,7 @@
 import gleam/dict
 import gleam/list
 import gleam/option
+import gleam/result
 import gleeunit
 import gstdx/listx
 import gstdx/optionx
@@ -52,6 +53,23 @@ pub fn listx_key_by_ok_test() {
   let res = input |> listx.key_by(by: fn(pair) { pair.1 })
 
   assert expected == res
+}
+
+pub fn listx_key_by_ok_2_test() {
+  let input = [#("alice", 23), #("bob", 42)]
+
+  let expected = [
+    #("alice", #("alice", 23)),
+    #("bob", #("bob", 42)),
+  ]
+
+  let actual =
+    input
+    |> listx.key_by(fn(pair) { pair.0 })
+    |> result.lazy_unwrap(fn() { panic as "invalid" })
+    |> dict.to_list
+
+  assert expected == actual
 }
 
 pub fn listx_key_by_err_test() {
