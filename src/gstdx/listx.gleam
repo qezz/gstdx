@@ -36,6 +36,23 @@ pub type KeyByError(k, t) {
   DuplicateKeyError(key: k, items: List(t))
 }
 
+/// Build a dictionary based on the `key` getter function.
+///
+/// Returns a list of `DuplicateKeyError`s if there are duplicate keys.
+///
+/// ## Examples
+///
+/// ```gleam
+/// [#("alice", 23), #("bob", 42)]
+/// |> key_by(fn(pair) {pair.0})
+/// |> result.lazy_unwrap(fn() { panic as "invalid" })
+/// |> dict.to_list
+/// // -> [
+/// //   #("alice", #("alice", 23)),
+/// //   #("bob", #("bob", 42)),
+/// // ]
+/// ```
+///
 pub fn key_by(
   list: List(v),
   by key: fn(v) -> k,
