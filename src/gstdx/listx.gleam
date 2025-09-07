@@ -16,6 +16,32 @@ import gleam/list
 /// // -> [#(100, [#("a", [100, 200])]), #(200, [#("b", [200]), #("a", [100, 200])])]
 /// ```
 ///
+/// A more practical example, imagine you have a list of services
+/// and each of them can be deployed to a several targets (hosts).
+/// You can map `host -> List(service)` as follows:
+///
+/// ```gleam
+/// [
+///   #("service_a", ["host01", "host02"]),
+///   #("service_b", ["host02", "host03"]),
+///   #("service_c", ["host01"]),
+/// ]
+/// |> listx.group_by_many(fn(pair) { pair.1 })
+/// |> dict.to_list
+/// // -> [
+/// //  #("host01", [
+/// //    #("service_c", ["host01"]),
+/// //    #("service_a", ["host01", "host02"]),
+/// //  ]),
+/// //  #("host02", [
+/// //    #("service_b", ["host02", "host03"]),
+/// //    #("service_a", ["host01", "host02"]),
+/// //  ]),
+/// //  #("host03", [#("service_b", ["host02", "host03"])]),
+/// // ]
+///
+/// ```
+///
 pub fn group_by_many(
   list: List(v),
   by key: fn(v) -> List(k),

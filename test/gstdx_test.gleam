@@ -36,6 +36,33 @@ pub fn list_group_flat_lists_test() {
   assert expected == res
 }
 
+pub fn list_group_by_many_test() {
+  let input = [
+    #("service_a", ["host01", "host02"]),
+    #("service_b", ["host02", "host03"]),
+    #("service_c", ["host01"]),
+  ]
+
+  let expected = [
+    #("host01", [
+      #("service_c", ["host01"]),
+      #("service_a", ["host01", "host02"]),
+    ]),
+    #("host02", [
+      #("service_b", ["host02", "host03"]),
+      #("service_a", ["host01", "host02"]),
+    ]),
+    #("host03", [#("service_b", ["host02", "host03"])]),
+  ]
+
+  let actual =
+    input
+    |> listx.group_by_many(fn(pair) { pair.1 })
+    |> dict.to_list
+
+  assert expected == actual
+}
+
 pub fn listx_key_by_ok_test() {
   let input = [
     #("a", "x"),
